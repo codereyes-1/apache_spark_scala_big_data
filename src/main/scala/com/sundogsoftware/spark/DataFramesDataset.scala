@@ -41,13 +41,22 @@ object DataFramesDataset {
     
     println("Filter out anyone over 21:")
     people.filter(people("age") < 21).show()
+    //  same as select name where age < 21
+    // having an expression as a parameter passed to a function works in scala
    
     println("Group by age:")
-    people.groupBy("age").count().show()
-    
+  people.groupBy("age").count().sort("age").show()
+    // same as the group by key operation in RDD. collates all the distinct values of ages
+    // then call count on them to get a total of how many ppl exist in each age year and show results
+    // with RDDD, transform with map operation to insert a number 1 for each person then do reduce by key operation
+    // to add them all up. with datasets can use more of SQL syntax and do in one line of code
+
     println("Make everyone 10 years older:")
     people.select(people("name"), people("age") + 10).show()
-    
+    // select all the people, their age and +10 for each age
+
     spark.stop()
+    // This approach is closing the gap between Spark and using a relational database and having it used in same way w/Apache Spark in
+    // newer versions. Difference is instead of single monolithic database server, an entire cluster doing this potentially
   }
 }
